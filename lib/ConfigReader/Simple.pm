@@ -1,13 +1,13 @@
 package ConfigReader::Simple;
 use strict;
 
-# $Id: Simple.pm,v 1.4 2001/10/23 06:55:10 comdog Exp $
+# $Id: Simple.pm,v 1.5 2001/10/23 20:04:35 comdog Exp $
 
 use vars qw($VERSION $AUTOLOAD);
 
 use Carp qw(croak);
 
-( $VERSION ) = q$Revision: 1.4 $ =~ m/ (\d+ \. \d+) /gx;
+( $VERSION ) = q$Revision: 1.5 $ =~ m/ (\d+ \. \d+) /gx;
 
 my $DEBUG = 0;
 
@@ -20,6 +20,8 @@ ConfigReader::Simple - Simple configuration file parser
    use ConfigReader::Simple;
 
    $config = ConfigReader::Simple->new("configrc", [qw(Foo Bar Baz Quux)]);
+
+   my @directives = $config->directives;
 
    $config->get("Foo");
    
@@ -133,6 +135,22 @@ sub get {
 
    return $self->{"config_data"}{$key};
 }
+
+=item directives()
+
+Returns a list of all of the directive names found in the configuration
+file. The keys are sorted ASCII-betically.
+
+=cut
+
+sub directives
+	{
+	my $self = shift;
+
+	my @keys = sort keys %{ $self->{"config_data"} };
+
+	return @keys;
+	}
 
 # Internal methods
 
