@@ -1,13 +1,31 @@
-# $Id: Makefile.PL,v 1.3 2001/09/29 18:45:32 comdog Exp $
+# $Id: Makefile.PL,v 1.4 2002/09/16 21:16:55 comdog Exp $
 use strict;
 
 use ExtUtils::MakeMaker;
+
+my $tests = do {
+        local @ARGV = qw(t/test_manifest);
+        my $data = join " ", map {chomp; "t/$_" } <>;
+        };
+
 WriteMakefile(
     'NAME'	   => 'ConfigReader::Simple',
     'VERSION_FROM' => 'lib/ConfigReader/Simple.pm',
 
+	'PREREQ_PM'    => {
+		File::Find::Rule => '0',
+		Test::More       => '0',
+		Test::Pod        => '0',
+		},
+		
     'dist'         => { 
                          COMPRESS => 'gzip -9f',
                          SUFFIX => '.gz',
                       },
+                      
+    depend => { Makefile => 't/test_manifest' },
+    test   => { TESTS => $tests },
+
 );
+
+1;
