@@ -1,13 +1,13 @@
 package ConfigReader::Simple;
 use strict;
 
-# $Id: Simple.pm,v 1.13 2002/09/16 21:18:46 comdog Exp $
+# $Id: Simple.pm,v 1.14 2002/09/20 23:12:29 comdog Exp $
 
 use vars qw($VERSION $AUTOLOAD);
 
 use Carp qw(croak);
 
-( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.13 $ =~ m/ (\d+) \. (\d+) /gx;
+( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.14 $ =~ m/ (\d+) \. (\d+) /gx;
 
 my $DEBUG = 0;
 

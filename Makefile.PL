@@ -10,7 +10,8 @@ my $tests = do {
 
 WriteMakefile(
     'NAME'	   => 'ConfigReader::Simple',
-    'VERSION_FROM' => 'lib/ConfigReader/Simple.pm',
+#    'VERSION_FROM' => 'lib/ConfigReader/Simple.pm',
+'VERSION' => '1.13_01',
 
 	'PREREQ_PM'    => {
 		File::Find::Rule => '0',
