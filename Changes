@@ -1,4 +1,9 @@
-# $Id: Changes,v 1.6 2003/03/23 21:51:38 petdance Exp $
+# $Id: Changes,v 1.7 2003/11/30 17:13:47 comdog Exp $
+
+1.17 - Sun Nov 30 11:12:50 2003
+	+ some fix ups for the POD docs
+	+ fixed a problem in t/pod.t so the test finds the files
+	+ if you already have this installed, you don't need this update
 
 New in 1.20
 	- Removed all module dependencies except Test::More
