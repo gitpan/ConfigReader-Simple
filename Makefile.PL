@@ -1,16 +1,10 @@
-# $Id: Makefile.PL,v 1.7 2003/03/23 21:51:38 petdance Exp $
+# $Id: Makefile.PL,v 1.8 2003/11/24 12:24:48 comdog Exp $
 use strict;
 
 use ExtUtils::MakeMaker;
 
-eval "use Test::Pod";
-
-if ( $@ || ($Test::Pod::VERSION <= '0.95') ) {
-    warn "Test::Pod 0.95 is not installed, so we'll skip the POD tests.\n";
-}
-
 WriteMakefile(
-    'NAME'	    => 'ConfigReader::Simple',
+    'NAME'	        => 'ConfigReader::Simple',
     'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
 
     'PREREQ_PM'	    => {
@@ -19,6 +13,4 @@ WriteMakefile(
 		                      
     clean  => { FILES => "ConfigReader-Simple-*" },
 
-);
-
-1;
+	);

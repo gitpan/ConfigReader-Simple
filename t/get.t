@@ -1,9 +1,8 @@
-# $Id: get.t,v 1.3 2002/10/22 14:45:43 comdog Exp $
+# $Id: get.t,v 1.4 2003/05/12 04:45:04 petdance Exp $
 
 use Test::More tests => 26;
 
 use ConfigReader::Simple;
-$loaded = 1;
 
 my @Directives = qw( Test1 Test2 Test3 Test4 );
 my $config = ConfigReader::Simple->new( "t/example.config", \@Directives );

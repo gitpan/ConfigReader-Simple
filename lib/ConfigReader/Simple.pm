@@ -1,15 +1,15 @@
-# $Id: Simple.pm,v 1.16 2003/03/23 21:55:40 petdance Exp $
+# $Id: Simple.pm,v 1.17 2003/11/30 17:08:35 comdog Exp $
 package ConfigReader::Simple;
 use strict;
 
 use subs qw(_init_errors);
-use vars qw($VERSION $AUTOLOAD $Warn %ERROR $ERROR $Warn $Die);
+use vars qw($VERSION $AUTOLOAD %ERROR $ERROR $Warn $Die);
 
 use Carp qw(croak carp);
 
 $Die   = '';
 $ERROR = '';
-( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.16 $ =~ m/ (\d+) \. (\d+) /gx;
+( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.17 $ =~ m/ (\d+) \. (\d+) /gx;
 $Warn = 0;
 
 my $DEBUG = 0;
@@ -542,13 +542,16 @@ ignored.
 
 =head1 CREDITS
 
-Bek Oberin <gossamer@tertius.net.au> wote the original module
+Bek Oberin E<lt>gossamer@tertius.net.auE<gt> wote the original module
 
-Kim Ryan <kimaryan@ozemail.com.au> adapted the module to make declaring
+Kim Ryan E<lt>kimaryan@ozemail.com.auE<gt> adapted the module to make declaring
 keys optional.  Thanks Kim.
 
-Alan W. Jurgensen <jurgensen@berbee.com> added a change to allow
+Alan W. Jurgensen E<lt>jurgensen@berbee.comE<gt> added a change to allow
 the NAME=VALUE format in the configuration file.
+
+Andy Lester, E<lt>petdance@cpan.orgE<gt>, for maintaining the
+module while brian was on active duty.
 
 =head1 SOURCE AVAILABILITY
 
