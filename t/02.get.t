@@ -1,5 +1,5 @@
-# $Id: 02.get.t,v 1.3 2002/03/29 00:04:05 comdog Exp $
-BEGIN { $| = 1; print "1..9\n"; }
+# $Id: 02.get.t,v 1.4 2002/07/14 03:56:33 comdog Exp $
+BEGIN { $| = 1; print "1..10\n"; }
 END   {print "not ok\n" unless $loaded;}
 
 # Test it loads
@@ -106,3 +106,21 @@ eval
 	};
 $@ ? not_ok($@) : ok();
 print STDERR $@ if $@;
+
+eval
+	{
+	$config = ConfigReader::Simple->new( "t/example.config" );
+
+	die "\nDid not fetch Test3 value correctly"
+		unless $config->get( 'Test3' ) eq 'foo';
+	die "\nDid not fetch Test2 value correctly"
+		unless $config->get( 'Test2' ) eq 'Test 2 value';
+
+	$config->add_config_file( "t/global.config" );
+	
+	die "\nDid not fetch Scope value correctly"
+		unless $config->get( 'Scope' ) eq 'Global';
+	};
+$@ ? not_ok($@) : ok();
+print STDERR $@ if $@;
+
