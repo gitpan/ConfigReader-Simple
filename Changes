@@ -1,4 +1,13 @@
-# $Id: Changes,v 1.3 2002/07/14 03:56:33 comdog Exp $
+# $Id: Changes,v 1.5 2002/10/22 14:45:42 comdog Exp $
+
+New in 1.15
+	- new_multiple can keep going if it cannot read a file
+	- added $Die, $Warn, $ERROR, %Error variables for settings
+	- things that should croak do
+
+New in 1.14
+	- cleaned up Makefile.PL
+	- added prereq test
 
 New in 1.12
 	_ added add_config_file() to pull in more configuration directives
