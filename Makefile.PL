@@ -23,7 +23,7 @@ sub MY::postamble {
 
    '
 
-WEBDIR = /home/gossamer/websrc/docs/code
+WEBDIR = /home/gossamer/web/netizen/homepage/code
 WEB_FILELIST = $(WEBDIR)/file-list
 
 webdist: dist

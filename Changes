@@ -1,4 +1,10 @@
 
+New in 0.9
+   - Bumped up the version number because it's nearly mature
+   - Now you can declare all, some or no keys and it will only die if a
+     declared key is not found in the config file. 
+     (Kim Ryan <kimaryan@ozemail.com.au>)
+
 New in 0.5
    - Changed module name to ConfigReader::Simple to match up with
      other modules in CPAN better.

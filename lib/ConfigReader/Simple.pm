@@ -3,11 +3,11 @@ package ConfigReader::Simple;
 # Simple interface to a configuration file
 #
 # ObLegalStuff:
-#    Copyright (c) 1998 Bek Oberin. All rights reserved. This program is
+#    Copyright (c) 2000 Bek Oberin. All rights reserved. This program is
 #    free software; you can redistribute it and/or modify it under the
 #    same terms as Perl itself.
 # 
-# Last updated by gossamer on Thu Sep  3 22:01:47 EST 1998
+# Last updated by gossamer on Sat Aug 12 09:06:08 EST 2000
 #
 
 use strict;
@@ -19,7 +19,7 @@ require Exporter;
 @EXPORT = qw();
 @EXPORT_OK = qw();
 
-$VERSION = "0.5";
+$VERSION = "0.9";
 
 my $DEBUG = 0;
 
@@ -34,10 +34,13 @@ ConfigReader::Simple - Simple configuration file parser
    $config = ConfigReader::Simple->new("configrc", [qw(Foo Bar Baz Quux)]);
 
    $config->parse();
+   
+   $config->get("Foo");
+   
 
 =head1 DESCRIPTION
 
-   C<ConfigReader::Simple> reads and parses simple configuration files.  It's
+   C<ConfigReader::Simple> reads and parses simple configuration files. It's
    designed to be smaller and simpler than the C<ConfigReader> module
    and is more suited to simple configuration files.
 
@@ -56,8 +59,11 @@ This is the constructor for a new ConfigReader::Simple object.
 C<FILENAME> tells the instance where to look for the configuration
 file.
 
-C<DIRECTIVES> is a reference to an array.  Each member of the array
-should contain one valid directive.
+C<DIRECTIVES> is an optional argument and is a reference to an array.  
+Each member of the array should contain one valid directive. A directive
+is the name of a key that must occur in the configuration file. If it
+is not found, the module will die. The directive list may contain all
+the keys in the configuration file, a sub set of keys or no keys at all.
 
 =cut
 
@@ -106,15 +112,14 @@ sub parse {
       next if /^\s*#/;  # comment
 
       my ($key, $value) = &parse_line($_);
-      print STDERR "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
-      if (&is_arraymember($key, $self->{"validkeys"})) {
-         $self->{"config_data"}{$key} = $value;
-      } else {
-         die "Config:  Invalid key '$key'\n";
-      }
+      warn "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
+      
+      $self->{"config_data"}{$key} = $value;
    }
-
    close(CONFIG);
+   
+ 	$self->_validate_keys;
+
    return 1;
 
 }
@@ -133,6 +138,8 @@ sub get {
    return $self->{"config_data"}{$key};
 }
 
+# Internal methods
+
 sub parse_line {
    my $text = shift;
 
@@ -148,14 +155,36 @@ sub parse_line {
    return ($key, $value);
 }
 
-sub is_arraymember {
-   my $value = shift;
-   my $arrayref = shift;
 
-   foreach (@$arrayref) {
-      return 1 if $_ eq $value;
-   }
-   return 0;
+=pod
+
+=item _validate_keys ( )
+
+If any keys were declared when the object was constructed,
+check that those keys actually occur in the configuration file.
+
+=cut
+
+
+sub _validate_keys {
+	
+   my $self = shift;
+   
+	if ( $self->{"validkeys"} )
+	{
+		my ($declared_key);
+		my $declared_keys_ref = $self->{"validkeys"};
+      foreach $declared_key ( @$declared_keys_ref )
+      {
+      	unless ( $self->{"config_data"}{$declared_key} )
+      	{
+         	die "Config: key '$declared_key' does not occur in file $self->{filename}\n";
+      	}
+         warn "Key: $declared_key found.\n" if $DEBUG;
+      }
+	}
+
+   return 1;
 }
 
 =pod
@@ -176,13 +205,18 @@ unknown directive not know (ie: one that wasn't passed via C<new()>).
 
 All these will be addressed in future releases.
 
-=head1 AUTHOR
+=head1 CREDITS
+
+Kim Ryan <kimaryan@ozemail.com.au> adapted the module to make declaring
+keys optional.  Thanks Kim.
+
+=head1 AUTHORS
 
 Bek Oberin <gossamer@tertius.net.au>
 
 =head1 COPYRIGHT
 
-Copyright (c) 1998 Bek Oberin.  All rights reserved.
+Copyright (c) 2000 Bek Oberin.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
