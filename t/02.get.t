@@ -1,5 +1,5 @@
-# $Id: 02.get.t,v 1.2 2002/03/07 20:33:20 comdog Exp $
-BEGIN { $| = 1; print "1..8\n"; }
+# $Id: 02.get.t,v 1.3 2002/03/29 00:04:05 comdog Exp $
+BEGIN { $| = 1; print "1..9\n"; }
 END   {print "not ok\n" unless $loaded;}
 
 # Test it loads
@@ -29,6 +29,19 @@ eval
 		unless $config->get( 'Test3' ) eq 'foo';
 	die "\nDid not fetch Test2 value correctly"
 		unless $config->get( 'Test2' ) eq 'Test 2 value';
+	};
+$@ ? not_ok($@) : ok();
+print STDERR $@ if $@;
+
+# get things that do exist, but look like false values to perl
+eval
+	{
+	die "\nDid not fetch Zero value correctly (as a string)"
+		unless $config->get( 'Zero' ) eq '0';
+	die "\nDid not fetch Zero value correctly (as a number)"
+		unless $config->get( 'Zero' ) == 0;
+	die "\nDid not fetch Undef value correctly"
+		unless $config->get( 'Undef' ) eq '';
 	};
 $@ ? not_ok($@) : ok();
 print STDERR $@ if $@;

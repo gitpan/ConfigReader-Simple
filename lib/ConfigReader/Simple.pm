@@ -1,13 +1,13 @@
 package ConfigReader::Simple;
 use strict;
 
-# $Id: Simple.pm,v 1.10 2002/03/07 22:30:12 comdog Exp $
+# $Id: Simple.pm,v 1.11 2002/03/29 00:07:02 comdog Exp $
 
 use vars qw($VERSION $AUTOLOAD);
 
 use Carp qw(croak);
 
-( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.10 $ =~ m/ (\d+) \. (\d+) /gx;
+( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.11 $ =~ m/ (\d+) \. (\d+) /gx;
 
 my $DEBUG = 0;
 
@@ -187,7 +187,9 @@ sub parse
 
 =item get( DIRECTIVE )
 
-Returns the parsed value for that directive.
+Returns the parsed value for that directive.  For directives
+which did not have a value in the configuration file, C<get>
+returns the empty string.
 
 =cut
 
