@@ -1,13 +1,18 @@
-# $Id: pod.t,v 1.1 2002/09/16 21:13:51 comdog Exp $
+# $Id: pod.t,v 1.2 2003/03/23 21:52:41 petdance Exp $
+
 BEGIN {
-	use File::Find::Rule;
-	@files = File::Find::Rule->file()->name( '*.pm' )->in( 'blib/lib' );
-	}
+    @files = qw(
+	lib/ConfigReader/Simple
+    );
+    $nfiles = @files;
+}
 
-use Test::More tests => scalar @files;
-use Test::Pod;
+use Test::More tests => $nfiles;
 
-foreach my $file ( @files )
-	{
-	pod_ok( $file );
-	}
+SKIP: {
+    eval "use Test::Pod;";
+    $bad = ( $@ || ($Test::Pod::VERSION <= '0.95') );
+    skip "Test::Pod 0.95 not installed", $nfiles if $bad;
+    pod_file_ok('blib/$_') for @files;
+}
+

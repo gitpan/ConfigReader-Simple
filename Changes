@@ -1,4 +1,7 @@
-# $Id: Changes,v 1.5 2002/10/22 14:45:42 comdog Exp $
+# $Id: Changes,v 1.6 2003/03/23 21:51:38 petdance Exp $
+
+New in 1.20
+	- Removed all module dependencies except Test::More
 
 New in 1.15
 	- new_multiple can keep going if it cannot read a file
