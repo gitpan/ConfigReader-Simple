@@ -8,6 +8,7 @@ t/example.config
 t/global.config
 t/load.t
 t/pod.t
+t/prereq.t
 t/get.t
 t/set.t
 t/remove.t
