@@ -1,5 +1,6 @@
-# $Id: load.t,v 1.3 2003/03/23 21:52:41 petdance Exp $
+# $Id: load.t,v 1.4 2004/04/29 06:22:13 comdog Exp $
 
 use Test::More tests => 1;
-use_ok( 'ConfigReader::Simple' );
+print "bail out! ConfigReader::Simple did not compile" 
+	unless use_ok( 'ConfigReader::Simple' );
 
