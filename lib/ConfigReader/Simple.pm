@@ -1,4 +1,4 @@
-# $Id: Simple.pm,v 1.21 2005/08/24 22:51:01 comdog Exp $
+# $Id: Simple.pm,v 1.23 2006/04/10 14:30:40 comdog Exp $
 package ConfigReader::Simple;
 use strict;
 
@@ -10,7 +10,7 @@ use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
-( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.21 $ =~ m/ (\d+) \. (\d+) /gx;
+( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.23 $ =~ m/ (\d+) \. (\d+) /gx;
 $Warn = 0;
 
 my $DEBUG = 0;
@@ -68,7 +68,7 @@ ConfigReader::Simple - Simple configuration file parser
 
 C<ConfigReader::Simple> reads and parses simple configuration files. It is
 designed to be smaller and simpler than the C<ConfigReader> module
-and is more suited to simple configuration files.
+and is more suited to simple configuration files. 
 
 =head2 The configuration file format
 
@@ -717,7 +717,7 @@ sub parse_line
 	my ($key, $value);
 	
 	# AWJ: Allow optional '=' or ' = ' between key and value:
-	if ($text =~ /^\s*(\w+)\s*[=]?\s*(['"]?)(.*?)\2\s*$/ ) 
+	if ($text =~ /^\s*([^\s=]+)\s*[=]?\s*(['"]?)(.*?)\2\s*$/ ) 
 		{
 		( $key, $value ) = ( $1, $3 );
 		} 

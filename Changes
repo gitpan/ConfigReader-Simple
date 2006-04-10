@@ -1,4 +1,16 @@
-# $Id: Changes,v 1.8 2004/02/11 01:43:29 comdog Exp $
+# $Id: Changes,v 1.10 2006/04/10 14:31:37 comdog Exp $
+
+1.23 - Mon Apr 10 09:30:54 2006
+	* Changed configuration directive parsing to accept [^\s=]+ instead of
+	just \w+ 
+	* If you want to name your configuration directives with characters
+	outside of \w, you should upgrade to this version
+	* If your teammates are using config directives with characters
+	outside of \w, they're going to make you upgrade. :)  
+
+1.21 - Wed Aug 24 18:37:34 2005
+	* Fixed string parsing bug which messed up on continuation lines
+	* cloning an object now makes a deep copy, fixing another bug
 
 1.18 - Tue Feb 10 20:46:05 2004
 * Adam Trickett added support for continuation lines
