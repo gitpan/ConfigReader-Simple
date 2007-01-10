@@ -1,4 +1,4 @@
-# $Id: Simple.pm,v 1.23 2006/04/10 14:30:40 comdog Exp $
+# $Id: Simple.pm,v 1.24 2007/01/10 03:57:20 comdog Exp $
 package ConfigReader::Simple;
 use strict;
 
@@ -10,7 +10,7 @@ use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
-( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.23 $ =~ m/ (\d+) \. (\d+) /gx;
+( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.24 $ =~ m/ (\d+) \. (\d+) /gx;
 $Warn = 0;
 
 my $DEBUG = 0;
@@ -831,9 +831,9 @@ members of the project can shepherd this module appropriately.
 
 brian d foy, C<< <bdfoy@cpan.org> >>
 
-=head1 COPYRIGHT
+=head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2004 brian d foy.  All rights reserved.
+Copyright (c) 2002-2007 brian d foy.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

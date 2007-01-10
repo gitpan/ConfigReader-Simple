@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.11 2006/04/06 16:13:41 comdog Exp $
+# $Id: Makefile.PL,v 1.12 2007/01/10 03:57:20 comdog Exp $
 use strict;
 
 use ExtUtils::MakeMaker;
@@ -8,6 +8,7 @@ eval "use Test::Manifest 1.14";
 WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
     'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
+	'LICENSE'       => 'perl',
 
     'PREREQ_PM'	    => {
 		'Test::More'       => '0',
