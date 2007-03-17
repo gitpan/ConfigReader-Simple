@@ -1,4 +1,4 @@
-# $Id: save.t,v 1.1 2004/04/29 06:31:29 comdog Exp $
+# $Id: save.t 2199 2007-03-17 01:08:55Z comdog $
 
 use Test::More tests => 18;
 use Test::Warn;
@@ -62,7 +62,4 @@ my $result = eval { $config->save(
 ok( $result, 'Four arguments return true' );
 }
 
-
-
-
-#unlink $File;
+unlink @Files;

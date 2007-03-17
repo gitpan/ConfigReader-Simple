@@ -1,4 +1,4 @@
-# $Id: Simple.pm,v 1.24 2007/01/10 03:57:20 comdog Exp $
+# $Id: Simple.pm 2199 2007-03-17 01:08:55Z comdog $
 package ConfigReader::Simple;
 use strict;
 
@@ -10,10 +10,11 @@ use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
-( $VERSION ) = sprintf "%d.%02d", q$Revision: 1.24 $ =~ m/ (\d+) \. (\d+) /gx;
+( $VERSION ) = 1.25;
+#= sprintf "%d.%02d", q$Revision: 2199 $ =~ m/ (\d+) \. (\d+) /gx;
 $Warn = 0;
 
-my $DEBUG = 0;
+our $DEBUG = 0;
 my $Error = '';
 
 sub SUCCESS() { 1 };
@@ -168,7 +169,7 @@ sub new
 	$keyref = [] unless defined $keyref;
 	
 	my $self = $class->new_multiple( 
-		Files => [ $filename ],
+		Files => [ defined $filename ? $filename : () ],
 		Keys  => $keyref );
 			
 	return $self;
@@ -583,6 +584,7 @@ without affecting the old one.
 # I expect that the hash will be very simple.  Some keys
 # might have a reference value, but that reference value
 # will be "flat", so it won't have references in it.
+
 sub clone
 	{
 	my $self = shift;

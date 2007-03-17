@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.12 2007/01/10 03:57:20 comdog Exp $
+# $Id: Makefile.PL 2199 2007-03-17 01:08:55Z comdog $
 use strict;
 
 use ExtUtils::MakeMaker;
@@ -9,7 +9,8 @@ WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
     'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
 	'LICENSE'       => 'perl',
-
+	'AUTHOR'        => 'brian d foy <bdfoy@cpan.org>',
+	
     'PREREQ_PM'	    => {
 		'Test::More'       => '0',
 		'Test::Warn'       => '0',

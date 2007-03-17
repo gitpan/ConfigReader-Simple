@@ -1,4 +1,4 @@
-# $Id: remove.t,v 1.2 2003/05/12 04:45:04 petdance Exp $
+# $Id: remove.t 944 2003-05-12 04:45:04Z petdance $
 
 use Test::More tests => 5;
 

@@ -1,4 +1,4 @@
-# $Id: clone.t,v 1.2 2005/08/24 22:51:02 comdog Exp $
+# $Id: clone.t 1669 2005-08-24 22:51:02Z comdog $
 
 use Test::More tests => 14;
 
