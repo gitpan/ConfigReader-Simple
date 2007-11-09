@@ -1,4 +1,4 @@
-# $Id: Simple.pm 2199 2007-03-17 01:08:55Z comdog $
+# $Id: Simple.pm 2364 2007-11-09 11:29:56Z comdog $
 package ConfigReader::Simple;
 use strict;
 
@@ -10,8 +10,8 @@ use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
-( $VERSION ) = 1.25;
-#= sprintf "%d.%02d", q$Revision: 2199 $ =~ m/ (\d+) \. (\d+) /gx;
+( $VERSION ) = 1.26;
+#= sprintf "%d.%02d", q$Revision: 2364 $ =~ m/ (\d+) \. (\d+) /gx;
 $Warn = 0;
 
 our $DEBUG = 0;

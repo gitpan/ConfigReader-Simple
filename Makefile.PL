@@ -1,5 +1,7 @@
-# $Id: Makefile.PL 2199 2007-03-17 01:08:55Z comdog $
+# $Id: Makefile.PL 2365 2007-11-09 11:32:39Z comdog $
 use strict;
+
+require 5.006;
 
 use ExtUtils::MakeMaker;
 
@@ -7,17 +9,22 @@ eval "use Test::Manifest 1.14";
 	
 WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
-    'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
+    'VERSION_FROM'  => 'lib/Simple.pm',
+	'ABSTRACT'      => 'Simple configuration file parser',
+
 	'LICENSE'       => 'perl',
 	'AUTHOR'        => 'brian d foy <bdfoy@cpan.org>',
 	
     'PREREQ_PM'	    => {
-		'Test::More'       => '0',
 		'Test::Warn'       => '0',
+		},
+
+	'PM'           => {
+		'lib/Simple.pm'         => '$(INST_LIBDIR)/Simple.pm',
 		},
 		                      
 	'MAN3PODS' => {
-		'lib/ConfigReader/Simple.pm' => 
+		'lib/Simple.pm' => 
 			'$(INST_MAN3DIR)/ConfigReader::Simple.3',
 		},
 
