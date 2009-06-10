@@ -1,4 +1,3 @@
-# $Id: Simple.pm 2676 2008-08-20 12:33:02Z comdog $
 package ConfigReader::Simple;
 use strict;
 use warnings;
@@ -12,7 +11,7 @@ use UNIVERSAL qw(isa);
 
 $Die   = '';
 $ERROR = '';
-( $VERSION ) = 1.27;
+$VERSION = '1.28';
 $Warn = 0;
 
 our $DEBUG = 0;
@@ -34,7 +33,7 @@ ConfigReader::Simple - Simple configuration file parser
 
 	# parse multiple files, in order
 	$config = ConfigReader::Simple->new_multiple(
-		Files => [ "global", "configrc" ], 
+		Files => [ "global", "configrc" ],
 		Keys  => [qw(Foo Bar Baz Quux)]
 		);
 
@@ -46,10 +45,10 @@ ConfigReader::Simple - Simple configuration file parser
    		{
    		print "Bar was in the config file\n";
    		}
-   		
+
    	# copy an object to play with it separately
    	my $clone = $config->clone;
-   	
+
    	# only affects clone
    	$clone->set( "Foo", "Buster" );
 
@@ -59,9 +58,9 @@ ConfigReader::Simple - Simple configuration file parser
 	# save the config to a single file, but only with
 	# certain directives
 	$clone->save( "configrc" => [qw(Foo Bar)] )
-	
+
 	# save to multiple configuration files
-	$clone->save( 
+	$clone->save(
 		"configrc" => [qw(Foo Bar)],
 		"global"   => [qw(Baz Quux)],
 		);
@@ -70,7 +69,7 @@ ConfigReader::Simple - Simple configuration file parser
 
 C<ConfigReader::Simple> reads and parses simple configuration files. It is
 designed to be smaller and simpler than the C<ConfigReader> module
-and is more suited to simple configuration files. 
+and is more suited to simple configuration files.
 
 =head2 The configuration file format
 
@@ -89,28 +88,28 @@ In this example, the directive is "Camel" and the value is
 "Dromedary".
 
 	Camel Dromedary
-	
+
 Optionally, you can use a equal sign to separate the directive
 from the value.
 
 	Camel=Dromedary
-	
+
 The equal sign can also have whitespace on either or both
 sides.
 
 	Camel = Dromedary
 	Camel= Dromedary
-	
+
 In the next example, the directive is "Llama" and the value
 is "Live from Peru"
 
 	Llama Live from Peru
-	
-This is the same, to ConfigReader::Simple, as the following
+
+This is the same, to C<ConfigReader::Simple>, as the following
 which has more whitespace between the directive and the value.
 
 	Llama     Live from Peru
-	
+
 You can also enclose the value in single or double quotes.
 
 	Llama "Live from Peru"
@@ -132,8 +131,8 @@ line. These three entries are the same:
 	from \
 	Peru
 
-If a line is only whitespace, or the first whitespace character is 
-a #, the Perl comment character, ConfigReader::Simple ignores the
+If a line is only whitespace, or the first whitespace character is
+a #, the Perl comment character, C<ConfigReader::Simple> ignores the
 line unless it is the continuation of the previous line.
 
 =head2 Methods
@@ -142,7 +141,7 @@ line unless it is the continuation of the previous line.
 
 =item new ( FILENAME, DIRECTIVES )
 
-Creates a ConfigReader::Simple object.
+Creates a C<ConfigReader::Simple> object.
 
 C<FILENAME> tells the instance where to look for the
 configuration file. If FILENAME cannot be found, an error
@@ -161,18 +160,18 @@ The C<new> method is really a wrapper around C<new_multiple>.
 
 =cut
 
-sub new 
+sub new
 	{
 	my $class    = shift;
 	my $filename = shift;
 	my $keyref   = shift;
-	
+
 	$keyref = [] unless defined $keyref;
-	
-	my $self = $class->new_multiple( 
+
+	my $self = $class->new_multiple(
 		Files => [ defined $filename ? $filename : () ],
 		Keys  => $keyref );
-			
+
 	return $self;
 	}
 
@@ -182,7 +181,7 @@ Create a configuration object from several files listed
 in the anonymous array value for the C<Files> key.  The
 module reads the files in the same order that they appear
 in the array.  Later values override earlier ones.  This
-allows you to specify global configurations which you 
+allows you to specify global configurations which you
 may override with more specific ones:
 
 	ConfigReader::Simple->new_multiple(
@@ -192,11 +191,11 @@ may override with more specific ones:
 This function croaks if the values are not array references.
 
 If this method cannot read a file, an error message for that
-file is added to the %ERROR hash with the filename as a key,
-and a combined error message appears in $ERROR.  Processing
+file is added to the C<%ERROR> hash with the filename as a key,
+and a combined error message appears in C<$ERROR>.  Processing
 the list of filenames continues if a file cannot be found,
 which may produced undesired results. You can disable this
-feature by setting the $ConfigReader::Simple::Die variable
+feature by setting the C<$ConfigReader::Simple::Die> variable
 to a true value.
 
 =cut
@@ -204,34 +203,34 @@ to a true value.
 sub new_multiple
 	{
 	_init_errors();
-	
+
 	my $class    = shift;
 	my %args     = @_;
 
 	my $self = {};
-	
+
 	$args{'Keys'} = [] unless defined $args{'Keys'};
-	
-	croak( __PACKAGE__ . ': Strings argument must be a array reference')
-		unless UNIVERSAL::isa( $args{'Files'}, 'ARRAY' );
+
+	croak( __PACKAGE__ . ': Files argument must be an array reference')
+		unless isa( $args{'Files'}, ref [] );
 	croak( __PACKAGE__ . ': Keys argument must be an array reference')
-		unless UNIVERSAL::isa( $args{'Keys'}, 'ARRAY' );
-		
+		unless isa( $args{'Keys'}, ref [] );
+
 	$self->{"filenames"} = $args{'Files'};
 	$self->{"validkeys"} = $args{'Keys'};
-	
+
 	bless $self, $class;
-	
+
 	foreach my $file ( @{ $self->{"filenames"} } )
 		{
 		my $result = $self->parse( $file );
 		croak $Error if( not $result and $Die );
-		
+
 		$ERROR{$file} = $Error unless $result;
 		}
-		
+
 	$ERROR = join "\n", map { $ERROR{$_} } keys %ERROR;
-	
+
 	return $self;
 	}
 
@@ -241,7 +240,7 @@ Create a configuration object from several strings listed
 in the anonymous array value for the C<Strings> key.  The
 module reads the strings in the same order that they appear
 in the array.  Later values override earlier ones.  This
-allows you to specify global configurations which you 
+allows you to specify global configurations which you
 may override with more specific ones:
 
 	ConfigReader::Simple->new_strings(
@@ -255,36 +254,38 @@ This function croaks if the values are not array references.
 sub new_string
 	{
 	_init_errors;
-	
+
 	my $class = shift;
 	my %args  = @_;
-	
+
 	my $self = {};
-	
+
 	$args{'Keys'} = [] unless defined $args{'Keys'};
 
-	croak( __PACKAGE__ . ': Strings argument must be a array reference')
-		unless UNIVERSAL::isa( $args{'Strings'}, 'ARRAY' );
+	croak( __PACKAGE__ . ': Strings argument must be an array reference')
+		unless isa( $args{'Strings'}, ref [] );
 	croak( __PACKAGE__ . ': Keys argument must be an array reference')
-		unless UNIVERSAL::isa( $args{'Keys'}, 'ARRAY' );
+		unless isa( $args{'Keys'}, ref [] );
 
 	bless $self, $class;
 
-	$self->{"strings"} = $args{'Strings'};
+	$self->{"strings"}   = $args{'Strings'};
 	$self->{"validkeys"} = $args{'Keys'};
-	
-	foreach my $string ( @{ $self->{"strings"} } )
+
+	foreach my $string_ref ( @{ $self->{"strings"} } )
 		{
-		$self->parse_string( $string );
+		croak( __PACKAGE__ . ': Element of Strings is not a scalar reference' )
+			unless isa( $string_ref, ref \ '' );
+		$self->parse_string( $string_ref );
 		}
-		
+
 	return $self;
 	}
-	
+
 =item add_config_file( FILENAME )
 
 Parse another configuration file and add its directives to the
-current configuration object. Any directives already defined 
+current configuration object. Any directives already defined
 will be replaced with the new values found in FILENAME.
 
 =cut
@@ -292,21 +293,19 @@ will be replaced with the new values found in FILENAME.
 sub add_config_file
 	{
 	_init_errors;
-	
-	my $self     = shift;
-	my $filename = shift;
-	
-	return unless ( -e $filename and -r _ );
-	
-	push @{ $self->{"filenames"} }, $filename
-		if $self->parse( $filename );
-	
+
+	my( $self, $filename ) = @_;
+
+	return unless $self->parse( $filename );
+
+	push @{ $self->{"filenames"} }, $filename;
+
 	return 1;
 	}
 
 =item files
 
-Return the list of configuration files associated with this 
+Return the list of configuration files associated with this
 object. The order of the return values is the order of parsing,
 so the first value is the first file parsed (and subsequent files may
 mask it).
@@ -315,7 +314,7 @@ mask it).
 
 sub files { @{ $_[0]->{"filenames"} } }
 
-=item new_from_prototype( 
+=item new_from_prototype(
 
 Create a clone object. This is the same thing as calling
 clone().
@@ -327,12 +326,12 @@ sub new_from_prototype
 	_init_errors;
 
 	my $self     = shift;
-	
+
 	my $clone = $self->clone;
-	
+
 	return $clone;
 	}
-	
+
 sub AUTOLOAD
 	{
 	my $self = shift;
@@ -342,10 +341,10 @@ sub AUTOLOAD
 	$method =~ s/.*:://;
 
 	$self->get( $method );
-	} 
+	}
 
-sub DESTROY 
-	{	
+sub DESTROY
+	{
 	return 1;
 	}
 
@@ -358,25 +357,21 @@ the configuration file by calling C<parse()> again.
 
 =cut
 
-sub parse 
+sub parse
 	{
-	my $self = shift;
-	my $file = shift;
-	
+	my( $self, $file ) = @_;
+
 	$Error = '';
-	
+
 	unless( open CONFIG, $file )
 		{
 		$Error = "Could not open configuration file [$file]: $!";
-		
-		carp "Could not open configuration file [$file]: $!" if
-			$Warn;
-			
+		carp $Error if $Warn;
 		return;
 		}
-		
+
 	$self->{"file_fields"}{$file} = [];
-	
+
 	while( <CONFIG> )
 		{
 		if ( s/\\ \s* $//x )
@@ -384,21 +379,21 @@ sub parse
 			$_ .= <CONFIG>;
 			redo unless eof CONFIG;
 			}
-			
+
 		chomp;
-		next if /^\s*(#|$)/; 
-		
+		next if /^\s*(#|$)/;
+
 		my ($key, $value) = &parse_line($_);
-		carp "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
-		
+		#carp "Key:  '$key'   Value:  '$value'\n" if $DEBUG;
+
 		$self->{"config_data"}{$key} = $value;
 		push @{ $self->{"file_fields"}{$file} }, $key;
 		}
-		
+
 	close(CONFIG);
-	
+
 	$self->_validate_keys;
-	
+
 	return 1;
 	}
 
@@ -413,43 +408,43 @@ sub parse_string
 	{
 	my $self   = shift;
 	my $string = shift;
-	
+
 	my @lines = split /\r?\n/, $$string;
 	chomp( @lines );
-	carp "A: Found " . @lines . " lines" if $DEBUG;
-	
+#	carp "A: Found " . @lines . " lines" if $DEBUG;
+
 	while( my $line = shift @lines )
 		{
-		carp "1: Line is $line" if $DEBUG;
+#		carp "1: Line is $line" if $DEBUG;
 
 		CONT: {
 		if ( $line =~ s/\\ \s* $//x )
 			{
-			carp "a: reading continuation line $lines[0]" if $DEBUG;
+#			carp "a: reading continuation line $lines[0]" if $DEBUG;
 			$line .= shift @lines;
-			carp "b: Line is $line" if $DEBUG;
+#			carp "b: Line is $line" if $DEBUG;
 			redo CONT unless @lines == 0;
 			}
 		}
 
-		carp "2: Line is $line" if $DEBUG;
-		
-		chomp $line;
-		next if $line =~ /^\s*(#|$)/; 
+#		carp "2: Line is $line" if $DEBUG;
 
-		carp "3: Line is $line" if $DEBUG;
-				
+		chomp $line;
+		next if $line =~ /^\s*(#|$)/;
+
+#		carp "3: Line is $line" if $DEBUG;
+
 		my ($key, $value) = &parse_line( $line );
-		carp "Key:  '$key'   Value:  '$value'" if $DEBUG;
-		
+#		carp "Key:  '$key'   Value:  '$value'" if $DEBUG;
+
 		$self->{"config_data"}{$key} = $value;
 		}
-			
+
 	$self->_validate_keys;
-	
+
 	return 1;
 	}
-	
+
 =item get( DIRECTIVE )
 
 Returns the parsed value for that directive.  For directives
@@ -458,18 +453,12 @@ returns the empty string.
 
 =cut
 
-sub get 
-	{
-	my $self = shift;
-	my $key  = shift;
-	
-	return $self->{"config_data"}{$key};
-	}
+sub get { $_[0]->{"config_data"}{$_[1]} }
 
 =item set( DIRECTIVE, VALUE )
 
 Sets the value for DIRECTIVE to VALUE.  The DIRECTIVE
-need not already exist.  This overwrites previous 
+need not already exist.  This overwrites previous
 values.
 
 The VALUE must be a simple scalar.  It cannot be a reference.
@@ -478,11 +467,11 @@ and returns false.
 
 =cut
 
-sub set 
+sub set
 	{
 	my $self = shift;
 	my( $key, $value ) = @_;
-	
+
 	if( ref $value )
 		{
 		$ERROR = "Second argument to set must be a simple scalar";
@@ -495,8 +484,10 @@ sub set
 			{
 			croak $ERROR;
 			}
+			
+		return;
 		}
-	
+
 	$self->{"config_data"}{$key} = $value;
 	}
 
@@ -513,18 +504,18 @@ sub unset
 	{
 	my $self = shift;
 	my $key  = shift;
-	
+
 	return unless $self->exists( $key );
-	
+
 	$self->{"config_data"}{$key} = undef;
-	
+
 	return 1;
 	}
 
 =item remove( DIRECTIVE )
 
 Remove the DIRECTIVE. Returns TRUE is DIRECTIVE existed
-and FALSE otherwise.   
+and FALSE otherwise.
 
 =cut
 
@@ -532,11 +523,11 @@ sub remove
 	{
 	my $self = shift;
 	my $key  = shift;
-	
+
 	return unless $self->exists( $key );
-	
+
 	delete $self->{"config_data"}{$key};
-	
+
 	return 1;
 	}
 
@@ -559,7 +550,7 @@ sub directives
 =item exists( DIRECTIVE )
 
 Return TRUE if the specified directive exists, and FALSE
-otherwise.  
+otherwise.
 
 =cut
 
@@ -567,7 +558,7 @@ sub exists
 	{
 	my $self = shift;
 	my $name = shift;
-	
+
 	return CORE::exists $self->{"config_data"}{ $name };
 	}
 
@@ -581,7 +572,7 @@ without affecting the old one.
 
 # this is only the first stab at this -- from 35,000
 # feet in coach class
-# 
+#
 # I expect that the hash will be very simple.  Some keys
 # might have a reference value, but that reference value
 # will be "flat", so it won't have references in it.
@@ -589,23 +580,23 @@ without affecting the old one.
 sub clone
 	{
 	my $self = shift;
-	
+
 	my $clone = bless {}, ref $self;
-	
+
 	$clone->{"filenames"} = [ @{ $self->{"filenames"} } ];
 	$clone->{"validkeys"} = [ @{ $self->{"validkeys"} } ];
 
 	foreach my $file ( keys %{ $self->{"file_fields"} } )
 		{
-		$clone->{"file_fields"}{ $file } 
+		$clone->{"file_fields"}{ $file }
 			= [ @{ $self->{"file_fields"}{ $file } } ];
 		}
-			
+
 	foreach my $key ( $self->directives )
 		{
 		$clone->set( $key, $self->get( $key ) );
 		}
-				
+
 	return $clone;
 	}
 
@@ -624,7 +615,7 @@ array reference which lists the directives to save in the file.
 	$clone->save( "configrc" => [qw(Foo Bar)] );
 
 With more than two arguments, the method expects filename-list pairs.
-The method will save in each file the values in their respective 
+The method will save in each file the values in their respective
 array references.
 
 	$clone->save(
@@ -641,95 +632,106 @@ specified files. Even if it has a problem with one of them, it continues
 onto the next one.  The method does not necessarily write the files
 in the order they appear in the argument list, and it does not check
 if you specified the same file twice.
-	
+
 =cut
 
-sub save	
+sub save
 	{
 	my $self = shift;
 	my @args = @_;
-	
+
 	if( @args == 0 ) # no args!
 		{
 		carp "No arguments to method!";
 		return;
 		}
-		
+
 	if( @args == 1 )	# this is a single file
 		{
 		push @args, [ $self->directives ];
 		}
-		
+
 	unless( @args % 2 == 0 ) { croak "Odd number of arguments" };
-	
+
 	my %hash = @args;
-	
+
 	foreach my $value ( values %hash )
 		{
 		croak "Argument is not an array reference"
 			unless isa( $value, 'ARRAY' );
 		}
-		
+
 	foreach my $file ( keys %hash )
 		{
 		carp $ERROR unless $self->_save( $file, $hash{$file} );
 		}
-		
+
 	1;
 	}
-	
+
 sub _save
 	{
-	my $self = shift;
-	my $file = shift;
-	
-	my $directives = shift;
+	my( $self, $file, $directives ) = @_;
 
-	unless( isa( $directives, 'ARRAY' ) )
+	unless( isa( $directives, ref [] ) )
 		{
 		$ERROR = 'Argument is not an array reference';
 		return;
 		}
-		
+
 	my $fh;
-	
-	unless( open $fh, "> $file" )
+	unless( open $fh, ">",  $file )
 		{
 		$ERROR = $!;
-		
 		return;
 		}
-		
+
 	foreach my $directive ( @$directives )
 		{
-		print $fh ( join "\t", $directive, $self->get( $directive ) );
-		print $fh "\n";
+		print $fh ( 
+			join( "\t", $directive, $self->get( $directive ) ),
+			"\n"
+			);
 		}
-		
-	close $fh;
-	
+
 	return SUCCESS;
 	}
-	
-# Internal methods
 
-sub parse_line 
+=begin private
+
+=item parse_line( STRING )
+
+Internal method. Don't call this directly.
+
+Takes a line of text and turns it into the directive and value.
+
+=end private
+
+=cut
+
+
+sub parse_line
 	{
-	my $text = shift;
-	
-	my ($key, $value);
-	
-	# AWJ: Allow optional '=' or ' = ' between key and value:
-	if ($text =~ /^\s*([^\s=]+)\s*[=]?\s*(['"]?)(.*?)\2\s*$/ ) 
-		{
-		( $key, $value ) = ( $1, $3 );
-		} 
-	else 
-		{
-		croak "Config: Can't parse line: $text\n";
-		}
-	
-	return ($key, $value);
+	return ( $1, $3 ) if $_[0] =~ /
+		^\s*
+
+		(
+		[^\s=]+
+		)
+		
+		\s*
+		[=]?
+		\s*
+		
+		(['"]?)
+			(.*?)
+		\2
+		
+		\s*
+		
+		$/x;
+
+	croak "Config: Can't parse line: $_[0]\n";
 	}
 
 sub _init_errors
@@ -738,34 +740,33 @@ sub _init_errors
 	$Error = undef;
 	$ERROR = undef;
 	}
-	
-# =item _validate_keys
 
-# If any keys were declared when the object was constructed,
-# check that those keys actually occur in the configuration file.
-# This function croaks if a declared key does not exist.
+=begin private
 
-# =cut
+=item _validate_keys
 
-sub _validate_keys 
+If any keys were declared when the object was constructed,
+check that those keys actually occur in the configuration file.
+This function croaks if a declared key does not exist.
+
+=end private
+
+=cut
+
+sub _validate_keys
 	{
 	my $self = shift;
-   
-	if ( $self->{"validkeys"} )
-		{
-		my ($declared_key);
-		my $declared_keys_ref = $self->{"validkeys"};
 
-		foreach $declared_key ( @$declared_keys_ref )
-			{
-			unless ( exists $self->{"config_data"}{$declared_key} )
-				{
-				croak "Config: key '$declared_key' does not occur in file $self->{filename}\n";
-      			}
-         
-         	carp "Key: $declared_key found.\n" if $DEBUG;
-			}
-		}
+	return SUCCESS unless exists $self->{"validkeys"};
+	
+	croak "validkeys was not an array reference!"
+		unless isa( $self->{"validkeys"}, ref [] );
+	my @keys = eval { @{ $self->{"validkeys"} } };
+
+	my @missing = grep { ! exists $self->{"config_data"}{$_} }@keys;
+
+	croak "Config: required keys [@missing] do not occur in config"
+		if @missing;
 
 	return SUCCESS;
 	}
@@ -776,7 +777,7 @@ sub _validate_keys
 
 =over 4
 
-=item $Die
+=item $Die - DEPRECATED
 
 If set to a true value, all errors are fatal.
 
@@ -789,7 +790,7 @@ The last error message.
 The error messages from unreadable files.  The key is
 the filename and the value is the error message.
 
-=item $Warn
+=item $Warn - DEPRECATED
 
 If set to a true value, methods may output warnings.
 
@@ -804,31 +805,27 @@ ignored.
 
 =head1 CREDITS
 
-Bek Oberin E<lt>gossamer@tertius.net.auE<gt> wote the original module
+Bek Oberin C<< <gossamer@tertius.net.au> >> wote the original module
 
-Kim Ryan E<lt>kimaryan@ozemail.com.auE<gt> adapted the module to make
+Kim Ryan C<< <kimaryan@ozemail.com.au> >> adapted the module to make
 declaring keys optional.  Thanks Kim.
 
-Alan W. Jurgensen E<lt>jurgensen@berbee.comE<gt> added a change to allow
+Alan W. Jurgensen C<< <jurgensen@berbee.com> >> added a change to allow
 the NAME=VALUE format in the configuration file.
 
-Andy Lester, E<lt>petdance@cpan.orgE<gt>, for maintaining the module
+Andy Lester, C<< <petdance@cpan.org> >>, for maintaining the module
 while brian was on active duty.
 
-Adam Trickett, E<lt>atrickett@cpan.orgE<gt>, added multi-line support.
+Adam Trickett, C<< <atrickett@cpan.org> >>, added multi-line support.
 You might want to see his C<Config::Trivial> module.
 
 Greg White has been a very patient user and tester.
 
 =head1 SOURCE AVAILABILITY
 
-This source is part of a SourceForge project which always has the
-latest sources in CVS, as well as all of the previous releases.
+The source is in Github:
 
-	http://sourceforge.net/projects/brian-d-foy/
-	
-If, for some reason, I disappear from the world, one of the other
-members of the project can shepherd this module appropriately.
+ http://github.com/briandfoy/ConfigReader-Simple/tree/master
 
 =head1 AUTHORS
 
@@ -836,7 +833,7 @@ brian d foy, C<< <bdfoy@cpan.org> >>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2007 brian d foy.  All rights reserved.
+Copyright (c) 2002-2009 brian d foy.  All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,5 +1,3 @@
-# $Id: pod_coverage.t 1671 2005-08-24 23:31:54Z comdog $
-
 use Test::More;
 eval "use Test::Pod::Coverage";
 
@@ -15,5 +13,5 @@ else
 		{
 		trustme => [ qr/^[A-Z_]+$/, qr/parse_line/ ]
 		}
-		);      
+		);
 	}
