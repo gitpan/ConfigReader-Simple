@@ -3,10 +3,11 @@ eg/config.desc
 eg/config_creator.pl
 eg/example.pl
 examples/README
-lib/Simple.pm
+lib/ConfigReader/Simple.pm
 LICENSE
 Makefile.PL
 MANIFEST
+MANIFEST.SKIP
 README
 t/_save.t
 t/add_config_file.t
@@ -32,4 +33,5 @@ t/set.t
 t/test_manifest
 t/unparseable.config
 t/validate_keys.t
-META.yml                                 Module meta-data (added by MakeMaker)
+META.yml                                 Module YAML meta-data (added by MakeMaker)
+META.json                                Module JSON meta-data (added by MakeMaker)

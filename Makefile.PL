@@ -8,7 +8,7 @@ eval "use Test::Manifest 1.21";
 	
 WriteMakefile(
     'NAME'	        => 'ConfigReader::Simple',
-    'VERSION_FROM'  => 'lib/Simple.pm',
+    'VERSION_FROM'  => 'lib/ConfigReader/Simple.pm',
 	'ABSTRACT'      => 'Simple configuration file parser',
 	'LICENSE'       => 'perl',
 	'AUTHOR'        => 'brian d foy <bdfoy@cpan.org>',
@@ -18,10 +18,6 @@ WriteMakefile(
 		'Test::Output'     => '0',
 		},
 
-	'PM'           => {
-		'lib/Simple.pm'         => '$(INST_LIBDIR)/Simple.pm',
-		},
-
 	(
 	$ExtUtils::MakeMaker::VERSION ge '6.48' ? 
 		(
@@ -29,20 +25,14 @@ WriteMakefile(
 
 		META_MERGE       => {
 			resources => {
-		  		repository => 'git://github.com/briandfoy/test-output.git',
+		  		repository => 'https://github.com/briandfoy/ConfigReader-Simple',
 				},
-			keywords => ['testing','STDOUT','STDERR'],
+			keywords => ['config'],
 	  		},
 	 	) 
 	 	: 
 	 	()
 	 ),
-		                      
-	'MAN3PODS' => {
-		'lib/Simple.pm' => 
-			'$(INST_MAN3DIR)/ConfigReader::Simple.$(MAN3EXT)',
-		},
 
     clean  => { FILES => "ConfigReader-Simple-*" },
-
 	);
